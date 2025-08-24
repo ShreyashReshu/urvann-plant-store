@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 
+// Set API base URL for production
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://urvann-plant-store-backend.onrender.com' 
+  : '';
+
 const PlantContext = createContext();
 
 const initialState = {
@@ -66,7 +71,7 @@ export const PlantProvider = ({ children }) => {
       if (state.maxPrice) params.append('maxPrice', state.maxPrice);
       if (state.availableOnly) params.append('available', 'true');
 
-      const response = await axios.get(`/api/plants?${params.toString()}`);
+      const response = await axios.get(`${API_BASE_URL}/api/plants?${params.toString()}`);
       dispatch({ type: 'SET_PLANTS', payload: response.data });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.response?.data?.error || 'Failed to fetch plants' });
@@ -75,7 +80,7 @@ export const PlantProvider = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/api/categories');
+      const response = await axios.get(`${API_BASE_URL}/api/categories`);
       dispatch({ type: 'SET_CATEGORIES', payload: response.data });
     } catch (error) {
       console.error('Failed to fetch categories:', error);
@@ -85,7 +90,7 @@ export const PlantProvider = ({ children }) => {
   const addPlant = async (plantData) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const response = await axios.post('/api/plants', plantData);
+      const response = await axios.post(`${API_BASE_URL}/api/plants`, plantData);
       dispatch({ type: 'ADD_PLANT', payload: response.data });
       return { success: true, data: response.data };
     } catch (error) {
@@ -97,7 +102,7 @@ export const PlantProvider = ({ children }) => {
 
   const updatePlant = async (id, plantData) => {
     try {
-      const response = await axios.put(`/api/plants/${id}`, plantData);
+      const response = await axios.put(`${API_BASE_URL}/api/plants/${id}`, plantData);
       dispatch({ type: 'UPDATE_PLANT', payload: response.data });
       return { success: true, data: response.data };
     } catch (error) {
@@ -109,7 +114,7 @@ export const PlantProvider = ({ children }) => {
 
   const deletePlant = async (id) => {
     try {
-      await axios.delete(`/api/plants/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/plants/${id}`);
       dispatch({ type: 'DELETE_PLANT', payload: id });
       return { success: true };
     } catch (error) {

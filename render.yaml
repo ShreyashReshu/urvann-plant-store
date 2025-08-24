@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: urvann-plant-store-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://urvann:plants123@cluster0.mongodb.net/urvann-plants
