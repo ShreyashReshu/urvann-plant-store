@@ -3,6 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, Star } from 'lucide-react';
 import axios from 'axios';
 
+// Configure API base URL for production
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://urvann-plant-store-backend.onrender.com' 
+  : '';
+
 const PlantDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,7 +19,7 @@ const PlantDetail = () => {
     const fetchPlant = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/plants/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/plants/${id}`);
         setPlant(response.data);
       } catch (error) {
         setError(error.response?.data?.error || 'Failed to fetch plant details');

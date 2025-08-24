@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 
-// Set API base URL for production
+// Configure API base URL for production
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
   ? 'https://urvann-plant-store-backend.onrender.com' 
   : '';
